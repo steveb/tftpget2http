@@ -39,7 +39,7 @@ func printUsage() {
 	fmt.Print("Usage:\n\n")
 	var defaultText string
 
-	for k, v := range configDefaults{
+	for k, v := range configDefaults {
 		if v.Mandatory {
 			defaultText = "Mandatory"
 		} else {
@@ -54,7 +54,7 @@ func getEnv(key string) (string, error) {
 	value := os.Getenv(key)
 	configDefault := configDefaults[key]
 	if value == "" {
-		if configDefault.Mandatory{
+		if configDefault.Mandatory {
 			return "", fmt.Errorf("%s: mandatory value missing", key)
 		}
 		value = configDefault.DefaultValue
@@ -78,8 +78,8 @@ func getIntEnv(key string) (int, error) {
 func buildConfig() error {
 	configDefaults = make(map[string]EnvVar)
 	configDefaults["HTTP_URL"] = EnvVar{
-		Help:         "Address and port to listen to",
-		Mandatory:    true,
+		Help:      "Address and port to listen to",
+		Mandatory: true,
 	}
 	configDefaults["LISTEN"] = EnvVar{
 		DefaultValue: ":69",
@@ -231,7 +231,7 @@ func main() {
 
 	client = &http.Client{
 		Transport: &http.Transport{
-			MaxIdleConnsPerHost: config.HTTPMaxIdle,
+			MaxIdleConnsPerHost:   config.HTTPMaxIdle,
 			ResponseHeaderTimeout: time.Duration(config.HTTPTimeout) * time.Second,
 		},
 	}
