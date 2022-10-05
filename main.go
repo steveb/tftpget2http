@@ -90,8 +90,8 @@ func buildConfig() error {
 		Help:         "Maximum idle connections for HTTP requests",
 	}
 	configDefaults["HTTP_TIMEOUT"] = EnvVar{
-		DefaultValue: "1",
-		Help:         "HTTP timeout limit in seconds",
+		DefaultValue: "5",
+		Help:         "HTTP timeout limit of initial response in seconds",
 	}
 	configDefaults["TFTP_TIMEOUT"] = EnvVar{
 		DefaultValue: "1",
@@ -232,8 +232,8 @@ func main() {
 	client = &http.Client{
 		Transport: &http.Transport{
 			MaxIdleConnsPerHost: config.HTTPMaxIdle,
+			ResponseHeaderTimeout: time.Duration(config.HTTPTimeout) * time.Second,
 		},
-		Timeout: time.Duration(config.HTTPTimeout) * time.Second,
 	}
 
 	s := tftp.NewServer(readHandler, writeHandler)
